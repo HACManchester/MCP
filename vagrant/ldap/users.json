@@ -1,0 +1,55 @@
+[
+  {
+    "username":"demo_user",
+    "display_name":"Demo User",
+    "user_id":"121",
+    "roles":[
+    ]
+  },
+  {
+    "username":"testy",
+    "display_name":"Testy McTestFace",
+    "user_id":"1212",
+    "roles":[
+      "active_member",
+      "laser_cutter_user"
+    ]
+  },
+  {
+    "username":"NbHacker",
+    "display_name":"NotQuiteHere",
+    "user_id":"5543",
+    "roles":[
+      "administrator",
+      "3d_printer_user",
+      "active_member",
+      "board_member",
+      "laser_cutter_user",
+      "laser_cutter_maintainer",
+      "laser_cutter_trainer"
+    ]
+  },
+  {
+    "username":"parag0n",
+    "display_name":"thinkl33t",
+    "user_id":"14354",
+    "roles":[
+      "administrator",
+      "3d_printer_user",
+      "active_member",
+      "board_member",
+      "laser_cutter_user",
+      "laser_cutter_maintainer",
+      "laser_cutter_trainer"
+    ]
+  },
+  {
+    "username":"Quidoigo",
+    "display_name":"Quidoigo",
+    "user_id":"156",
+    "roles":[
+      "active_member",
+      "laser_cutter_user"
+    ]
+  }
+]

@@ -1,0 +1,49 @@
+dn: ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: organizationalUnit
+description: Groups OU
+
+dn: cn=active_member,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: Active Members
+
+dn: cn=laser_cutter_user,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: Laser Cutter Users
+
+dn: cn=laser_cutter_maintainer,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: Laser Cutter Maintainers (Team Laser Explosion)
+
+dn: cn=laser_cutter_trainer,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: Laser Cutter Trainers
+
+dn: cn=3d_printer_user,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: 3D Printer Users
+
+dn: cn=3d_printer_maintainer,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: 3D Printer Maintainers (Team Laser Explosion)
+
+dn: cn=3d_printer_trainer,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: 3D Printer Trainers
+
+dn: cn=front_door_user,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: Front Door Users
+
+dn: cn=inner_door_user,ou=Groups,dc=hackspace,dc=internal
+objectClass: top
+objectClass: group
+description: Inner door Users

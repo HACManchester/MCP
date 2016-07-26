@@ -1,0 +1,36 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/jessie64"
+  config.vm.hostname = "testserver"
+
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 389, host: 389
+  config.vm.network "forwarded_port", guest: 636, host: 636
+
+  config.vm.provision "shell", inline: <<-SHELL
+     apt-get install -y vim
+     apt-get install -y samba ldap-utils winbind
+     rm /etc/samba/smb.conf
+     samba-tool domain provision --use-rfc2307 --realm hackspace.internal --domain hackspace --server-role=dc --dns-backend=SAMBA_INTERNAL
+     samba-tool domain passwordsettings set --complexity=off
+     samba-tool user setexpiry Administrator --noexpiry
+     samba-tool user setpassword administrator --newpassword="Password4LDAP"
+     /etc/init.d/samba stop
+     killall -9 winbindd # yeah, dont even ask
+
+     cp /vagrant/samba/smb.conf /etc/samba/smb.conf
+     openssl req -newkey rsa:2048 -keyout /etc/samba/tls/samba.key -nodes -x509 -days 365 -out /etc/samba/tls/samba.cer -subj "/C=UK/ST=Greater Manchester/L=Manchester/CN=testserver.hackspace.internal"
+     chmod 600 /etc/samba/tls/samba.key
+     cp /vagrant/samba/ldap.conf /etc/ldap/
+
+     echo "127.0.0.1 testserver.hackspace.internal" | tee -a /etc/hosts
+
+     /etc/init.d/samba start
+     sleep 10
+
+     ldapadd -w Password4LDAP -D 'administrator@hackspace.internal' -f /vagrant/ldap/createGroups.ldif -c
+
+     apt-get install -y python3 python-ldap3
+     cd /vagrant/ldap/
+     python3 import_existing_users.py
+   SHELL
+end
