@@ -13,6 +13,10 @@ The following rules apply to adding code to this application:
 
 Please remember to purge all sensitive data before committing.
 
+**To-do list:**
+
+We're working our way through this list: https://trello.com/b/RLODJjvR/mcp
+
 Initial Setup
 -------------
 
