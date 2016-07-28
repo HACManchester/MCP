@@ -3,6 +3,7 @@ from space_automation.mod_auth.controllers import mod_auth
 from flask_login import LoginManager
 
 app = Flask(__name__)
+app.config.from_pyfile('../config.py')
 app.register_blueprint(mod_auth)
 
 login_manager = LoginManager()

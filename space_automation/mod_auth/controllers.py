@@ -18,7 +18,7 @@ def login():
         except models.DoesNotExist:
             flash('Your username/password does not match', 'error')
     else:
-        return render_template('auth/login.html')
+        return render_template('auth/login.html', form=form)
 
 
 @mod_auth.route('/join-us/', methods=['GET', 'POST'])
