@@ -1,0 +1,13 @@
+{% macro render_field(field) %}
+<div class="field cf">
+    {% if field.errors %}
+        {% for field in field.errors %}
+            <div class="notification_error">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+    {% if field.type not in ["HiddenField", "CSRFTokenField"] %}
+        {{ field.label.text }}
+    {% endif %}
+        {{ field(placeholder="") }}
+</div>
+{% endmacro %}

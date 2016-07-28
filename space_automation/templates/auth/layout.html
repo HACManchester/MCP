@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {# <link rel="stylesheet" href="static/style.css"> #}
+  {% block head %}
+  <title>HacMan {% if title %} - {% block title %}{% endblock %} {% endif %}</title>
+  {% endblock %}
+</head>
+
+<body>
+  <header>
+    {% block header %}
+    <h1>HacMan</h1>
+{#    <ul>#}
+{#    {% for item in nav.top %}#}
+{#      <li class="{{ 'active' if item.is_active else '' }}">#}
+{#        <a href="{{ item.url }}">{{ item.label }}</a>#}
+{#      </li>#}
+{#    {% endfor %}#}
+{#    </ul>#}
+    {% endblock %}
+  </header>
+
+  <div id="flash_messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash">
+                {% for category, message in messages %}
+                <li class="{{ category }}"> {{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+  </div>
+
+  {% block content %}
+  {% endblock %}
+
+  <footer>
+    {% block footer %}{% endblock %}
+    &copy; 2016 &middot; created by <a href="http://tamarisk.it">tamarisk</a>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+{#    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>#}
+  </footer>
+</body>
+
+</html>

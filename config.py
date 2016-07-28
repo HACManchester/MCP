@@ -3,6 +3,7 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # defines the database we are working with
+# TODO replace this with peewee
 SQLALCHEMY_DB_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
 DB_CONNECT_OPTIONS = {}
 
@@ -19,3 +20,8 @@ CSRF_SESSION_KEY = 'supersecretkey'
 # Cookie signing key
 
 SECRET_KEY = "evenmoresecret"
+
+# Recaptcha keys
+
+RECAPTCHA_PUBLIC_KEY = '6Lcn9CUTAAAAAH3-5U3yrbvIVARnbea8qQI7gh_7'
+RECAPTCHA_PRIVATE_KEY = '6Lcn9CUTAAAAALNMsYfb6Z1hIBWNT7HsBBJwmYZG'
