@@ -1,3 +1,5 @@
 from space_automation import app
 
-app.run(debug=True)
+from config import DEBUG
+
+app.run(debug=DEBUG)

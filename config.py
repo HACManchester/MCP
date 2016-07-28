@@ -2,6 +2,8 @@
 import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+DEBUG = True
+
 # defines the database we are working with
 # TODO replace this with peewee
 SQLALCHEMY_DB_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')

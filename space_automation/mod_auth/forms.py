@@ -32,6 +32,7 @@ class SignUpForm(Form):
         'Repeat your password',
         validators=[DataRequired(), equal_to(password)]
     )
+    display_name = StringField('Display name')
     first_name = StringField(
         'First name',
         validators=[DataRequired(message="We need your first initial at a minimum, sorry")]

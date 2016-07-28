@@ -8,6 +8,7 @@ mod_auth = Blueprint('auth', __name__)
 
 @mod_auth.route('/login/', methods=['GET', 'POST'])
 def login():
+    # TODO: if user logs in with email address search tPeople for username, pass to LDAP for auth.
     form = forms.LoginForm()
     if form.validate_on_submit():
         try:
@@ -25,5 +26,11 @@ def login():
 def join_us():
     form = forms.SignUpForm()
     if form.validate_on_submit():
-        # do some other things
-        pass
+        try:
+            models.User.create(
+                username = form.username.data,
+                display_name = form.display_name.data,
+                password = form.password.data,
+                email = form.email.data
+            )
+
