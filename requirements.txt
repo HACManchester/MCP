@@ -3,3 +3,5 @@ flask-wtf
 flask-bootstrap
 sqlalchemy
 peewee
+flask-bcrypt
+flask-login

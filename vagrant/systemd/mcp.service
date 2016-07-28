@@ -1,0 +1,12 @@
+[Unit]
+Description=MCP
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/srv/mcp/venv/bin/python run.py
+WorkingDirectory=/srv/mcp
+User=vagrant
+
+[Install]
+WantedBy=multi-user.target

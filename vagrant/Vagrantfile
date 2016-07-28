@@ -2,12 +2,16 @@ Vagrant.configure("2") do |config|
   config.vm.box = "debian/jessie64"
   config.vm.hostname = "testserver"
 
+  config.vm.network "private_network", type: "dhcp"
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 389, host: 389
   config.vm.network "forwarded_port", guest: 636, host: 636
 
+  config.vm.synced_folder "./", "/vagrant",type:'virtualbox'
+  config.vm.synced_folder "../", "/srv/mcp"
+
   config.vm.provision "shell", inline: <<-SHELL
-     apt-get install -y vim
+     apt-get install -y vim systemd-sysv
      apt-get install -y samba ldap-utils winbind
      rm /etc/samba/smb.conf
      samba-tool domain provision --use-rfc2307 --realm hackspace.internal --domain hackspace --server-role=dc --dns-backend=SAMBA_INTERNAL
@@ -32,5 +36,25 @@ Vagrant.configure("2") do |config|
      apt-get install -y python3 python-ldap3
      cd /vagrant/ldap/
      python3 import_existing_users.py
+
+     # now we'll set up nginx + flask
+     apt-get install -y nginx virtualenv libpython3-dev libffi-dev
+
+     cd /srv/mcp
+     virtualenv -p python3 venv
+
+     rm -f /etc/nginx/sites-enabled/default
+     cp /vagrant/nginx/mcp /etc/nginx/sites-available/
+     ln -s /etc/nginx/sites-available/mcp /etc/nginx/sites-enabled/mcp
+
+     /etc/init.d/nginx restart
+
+     source venv/bin/activate
+     pip install -r requirements.txt
+
+     cp /vagrant/systemd/mcp.service /lib/systemd/system/
+     systemctl enable mcp
+     systemctl start mcp
+
    SHELL
 end

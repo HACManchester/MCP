@@ -2,5 +2,8 @@
 .idea
 venv
 __pycache__/
+*.pyc
 
 /mod_auth/config.py
+
+vagrant/.vagrant
