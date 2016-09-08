@@ -31,6 +31,10 @@ def join_us():
                 username = form.username.data,
                 display_name = form.display_name.data,
                 password = form.password.data,
-                email = form.email.data
+                email = form.email.data,
+                first_name = form.first_name.data,
+                last_name = form.last_name.data,
+                membership_amount = form.membership_amount.data #this needs to be converted into an int first
             )
+        except ValueError
 
