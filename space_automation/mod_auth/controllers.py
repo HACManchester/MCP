@@ -36,5 +36,6 @@ def join_us():
                 last_name = form.last_name.data,
                 membership_amount = form.membership_amount.data #this needs to be converted into an int first
             )
-        except ValueError
+        except ValueError:
+            pass
 
