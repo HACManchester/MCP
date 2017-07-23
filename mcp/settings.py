@@ -159,6 +159,7 @@ AUTH_LDAP_USER_ATTR_MAP = {
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
     "is_member": "cn=members,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
+    "is_staff": "cn=mcp_useradmins,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
     "is_superuser": "cn=mcp_useradmins,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk"
 }
 
