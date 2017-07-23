@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{#  googlefonts #}
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i" rel="stylesheet">
+{#    bootstrap #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+{#    font awesome #}
+    <script src="https://use.fontawesome.com/96d106795d.js"></script>
+{#    custom css #}
+    <link rel="stylesheet" href="{% static "style.css" %}">
+    {% block head %}
+    <title>HacMan {% if title %} - {% block title %}{% endblock %} {% endif %}</title>
+    {% endblock %}
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="container">
+    <header class="d-flex align-items-center    ">
+      {% block header %}
+          <div class="col-lg-9">
+              <h1>Hackspace Manchester</h1>
+              <h2>A place for people who make things, to make things together.</h2>
+          </div>
+          <img id="header-logo" class="col-lg-3 ml-auto" src="https://hacman.org.uk/wp-content/uploads/2013/11/hackspace-black1.png">
+      {% endblock %}
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        {% block footer %}{% endblock %}
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        {#    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>#}
+    </footer>
+</body>
+
+</html>

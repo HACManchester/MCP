@@ -100,3 +100,8 @@ ENV/
 
 # pycharm
 .idea
+
+# macfiles
+
+.DS_Store
+.gitignore.swp

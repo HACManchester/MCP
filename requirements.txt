@@ -1,2 +1,4 @@
 Django>=1.11,<2.0
 psycopg2
+django-localflavor
+django-phonenumber-field
