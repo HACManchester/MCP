@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -129,3 +132,43 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+AUTH_LDAP_SERVER_URI = "ldaps://ldap.hacman.org.uk"
+
+AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True
+
+AUTH_LDAP_BIND_DN = ""
+AUTH_LDAP_BIND_PASSWORD = ""
+AUTH_LDAP_USER_SEARCH = LDAPSearch("cn=accounts,dc=hacman,dc=org,dc=uk",
+    ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+
+# Set up the basic group parameters.
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch("cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
+    ldap.SCOPE_SUBTREE, "(objectClass=groupOfNames)"
+)
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="distinguishedName")
+
+AUTH_LDAP_REQUIRE_GROUP = "cn=allusers,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk"
+
+# Populate the Django user from the LDAP directory.
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail"
+}
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+    "is_member": "cn=members,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
+    "is_superuser": "cn=mcp_useradmins,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk"
+}
+
+AUTH_LDAP_FIND_GROUP_PERMS = True
+
+AUTH_LDAP_CACHE_GROUPS = True
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 600
+
+# Keep ModelBackend around for local superuser
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
