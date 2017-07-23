@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 cd /code
 
 while ! pg_isready -h db -p 5432 > /dev/null 2> /dev/null; do
