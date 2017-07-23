@@ -144,9 +144,9 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("cn=accounts,dc=hacman,dc=org,dc=uk",
 
 # Set up the basic group parameters.
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch("cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
-    ldap.SCOPE_SUBTREE, "(objectClass=groupOfNames)"
+    ldap.SCOPE_SUBTREE, "(&(objectClass=groupOfNames)(memberOf=cn=mcp,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk))"
 )
-AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="distinguishedName")
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
 
 AUTH_LDAP_REQUIRE_GROUP = "cn=allusers,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk"
 
@@ -167,6 +167,8 @@ AUTH_LDAP_FIND_GROUP_PERMS = True
 
 AUTH_LDAP_CACHE_GROUPS = True
 AUTH_LDAP_GROUP_CACHE_TIMEOUT = 600
+
+AUTH_LDAP_MIRROR_GROUPS = True
 
 # Keep ModelBackend around for local superuser
 AUTHENTICATION_BACKENDS = (
