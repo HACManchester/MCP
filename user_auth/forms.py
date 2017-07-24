@@ -17,6 +17,8 @@ MEMBERSHIP_AMOUNTS = (
 class SignupForm(forms.Form):
     name = forms.CharField(label="Name", max_length=100, required=True)
     email = forms.EmailField(label="email", required=True)
+    password = forms.CharField(label="Password", min_length=8, widget=forms.PasswordInput())
+    password_check = forms.CharField(label="Re-enter Password", min_length=8, widget=forms.PasswordInput())
     nickname = forms.CharField(label="Nickname", max_length=100)
     address = forms.CharField(label="Address", required=True)
     address1 = forms.CharField(label="Address 1")
@@ -28,3 +30,8 @@ class SignupForm(forms.Form):
     anything_else = forms.CharField(label="Anything else we should know?", widget=forms.Textarea)
     membership_amount = forms.CharField(label="Membership amount", widget=forms.Select(choices=MEMBERSHIP_AMOUNTS),
                                         initial='25')
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(label="Email", required=True)
+    password = forms.CharField(label="Password", min_length=8, widget=forms.PasswordInput(), required=True)
