@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm
 from django.contrib.auth.decorators import login_required
 
 def index(request):
@@ -19,19 +19,6 @@ def index(request):
 
 def thanks(request):
     return
-
-def login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/profile/')
-    else:
-        form = LoginForm()
-
-    return render(request, 'user_auth/login.htm', {'form': form})
 
 @login_required
 def test(request):
