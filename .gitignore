@@ -105,3 +105,6 @@ ENV/
 
 .DS_Store
 .gitignore.swp
+
+# Docker SECRETZ
+docker-compose.override.yml

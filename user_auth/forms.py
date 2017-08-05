@@ -30,8 +30,3 @@ class SignupForm(forms.Form):
     anything_else = forms.CharField(label="Anything else we should know?", widget=forms.Textarea)
     membership_amount = forms.CharField(label="Membership amount", widget=forms.Select(choices=MEMBERSHIP_AMOUNTS),
                                         initial='25')
-
-
-class LoginForm(forms.Form):
-    email = forms.EmailField(label="Email", required=True)
-    password = forms.CharField(label="Password", min_length=8, widget=forms.PasswordInput(), required=True)
