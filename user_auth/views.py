@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
 from .forms import SignupForm
+
+from .forms import SignupForm
 from django.contrib.auth.decorators import login_required
 
 def index(request):
@@ -13,7 +15,7 @@ def index(request):
             # redirect to a new URL:
             return HttpResponseRedirect('/thanks/')
     else:
-        form = SignupForm()
+        form = SignupForm(label_suffix='')
 
     return render(request, 'user_auth/index.htm', {'form': form})
 

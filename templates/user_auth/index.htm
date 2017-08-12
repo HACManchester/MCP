@@ -1,9 +1,5 @@
 {% extends "base.htm" %}
 
 {% block content %}
-    <form action="/sign-up/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Sign up" />
-</form>
+    {% include 'snippets/fieldset_form.htm' with form=form %}
 {% endblock %}
