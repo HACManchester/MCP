@@ -27,7 +27,7 @@ SECRET_KEY = 'x_hto3dh*&lt4vy5pp5n0_z$lzo!5_x@4az(@l_10@w_+i=s71'
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = os.environ.get('DEBUG')
+DEBUG = os.environ.get('DEBUG') != False
 
 # Application definition
 
@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'localflavor'
+    'debug_toolbar',
+    'localflavor',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -164,7 +166,7 @@ AUTH_LDAP_USER_FLAGS_BY_GROUP = {
 AUTH_LDAP_FIND_GROUP_PERMS = True
 
 AUTH_LDAP_CACHE_GROUPS = True
-AUTH_LDAP_GROUP_CACHE_TIMEOUT = 600
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 60
 
 AUTH_LDAP_MIRROR_GROUPS = True
 
@@ -195,3 +197,5 @@ LOGGING = {
         },
     }
 }
+
+INTERNAL_IPS = ['172.18.0.1']

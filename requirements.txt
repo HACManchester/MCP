@@ -4,3 +4,4 @@ django-localflavor
 django-phonenumber-field
 django-auth-ldap
 pyldap
+django-debug-toolbar
