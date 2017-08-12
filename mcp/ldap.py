@@ -4,6 +4,23 @@
 #https://bitbucket.org/illocution/django-auth-ldap/issues/63/authentication-against-different-ldap
 
 from django_auth_ldap.backend import LDAPBackend
+import ipahttp
+import os
+
+from django.forms import CharField
+from django.core import validators
+from django.core.exceptions import ValidationError
+
+def validate_ldap_username(value):
+    user = LDAPMergeBackend().populate_user(value)
+    if user is not None:
+        raise ValidationError(
+            'Sorry, username %(value)s is already in use.',
+            params={'value': value},
+        )
+
+class LDAPUsernameField(CharField):
+    default_validators = [validate_ldap_username]
 
 class LDAPMergeBackend(LDAPBackend):
     def get_or_create_user(self, username, ldap_user):
@@ -31,3 +48,15 @@ class LDAPMergeBackend(LDAPBackend):
         }
 
         return model.objects.get_or_create(**kwargs)
+
+class HackspaceIPA():
+    def __init__(self):
+        self.ipa = ipahttp.ipa(os.environ.get('IPA_URL'), sslverify=True)
+        self.ipa.login(os.environ.get('IPA_ADMIN_USER'), os.environ.get('IPA_ADMIN_PASSWORD'))
+
+    def ModifyIPAUser(self, username, **kwargs):
+        pass
+
+    def CreateIPAUser(self, username, name, email, password):
+        ename = name.split()
+        return self.ipa.user_add(username, opts={'givenname':ename[0], 'sn':ename[-1], 'cn':name, 'displayname':username, 'mail':email, 'userpassword':password})
