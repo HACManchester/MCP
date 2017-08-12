@@ -62,8 +62,8 @@ MEMBERSHIP_AMOUNTS = (
 
 class SignupForm(forms.Form):
 
-    name = forms.CharField(label="Name", max_length=100, required=True)
-    email = forms.EmailField(label="email", widget=forms.EmailInput(attrs={"placeholder": "Your email address"}),
+    name = forms.CharField(label="Name", max_length=100, required=True, widget=forms.TextInput(attrs={"placeholder": "Your name"}))
+    email = forms.EmailField(label="E-Mail", widget=forms.EmailInput(attrs={"placeholder": "Your email address"}),
                              required=True)
     password = forms.CharField(label="Password", min_length=8,
                                widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
