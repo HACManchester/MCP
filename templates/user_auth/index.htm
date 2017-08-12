@@ -1,0 +1,35 @@
+{% extends 'base.htm' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md" id="signup">
+        <h2>Join up</h2>
+        <a class="btn btn-secondary btn-lg col-8 offset-md-2" href="/register">Register</a>
+        <p>Become a member of our community lead workshop space in order to benefit from:</p>
+        <ul>
+            <li>24/7/365 access to the workshop with no hidden costs for "out-of-hours" access</li>
+            <li>Project storage within the space</li>
+            <li>Access to all our tools such as<ul>
+                <li>Our well equipped metal working and wood working workshops</li>
+                <li>A2 laser cutter (induction required)</li>
+                <li>Two 3D printers</li>
+                <li>Shapoko CNC Router</li>
+                <li>Craft area with industrial sewing machine, overlocker etc.</li>
+            </ul></li>
+            <li>A vote in board member elections and regular Members Meetings (Monthly on a Monday)</li>
+            <li>Access to our community and resources</li>
+            <li>A space in which to run messy/noisy events, workshops and regular meetups if you wish (we'll even promote them for you).</li>
+        </ul>
+
+        <p>Sound good? <a href="/register">Register now.</a></p>
+    </div>
+    <div class="col-md" id="login_form">
+      <h2>Already a member? Login</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary btn-lg col-8 offset-md-2" type="submit">Login</button>
+      </form>
+    </div>
+</div>
+{% endblock %}

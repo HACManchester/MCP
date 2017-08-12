@@ -5,6 +5,9 @@ from .forms import SignupForm
 from django.contrib.auth.decorators import login_required
 
 
+def index(request):
+    return render(request, 'user_auth/index.htm')
+
 def register(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)

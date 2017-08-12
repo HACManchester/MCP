@@ -47,18 +47,6 @@ def fieldsets(self):
 
 #  End fieldsets additions
 
-MEMBERSHIP_AMOUNTS = (
-    ('10', 10),
-    ('15', 15),
-    ('20', 20),
-    ('25', 25),
-    ('30', 30),
-    ('35', 35),
-    ('40', 40),
-    ('50', 50),
-    ('Other', 'Other'),
-)
-
 
 class SignupForm(forms.Form):
 
@@ -79,14 +67,14 @@ class SignupForm(forms.Form):
     city = forms.CharField(label="Town/City", widget=forms.TextInput(attrs={"placeholder": "Town/City"}))
     postcode = gb_forms.GBPostcodeField(label="Postcode",
                                         widget=forms.TextInput(attrs={"placeholder": "Postcode"}))
-    phone = forms.IntegerField(label="Phone Number",
+    phone = forms.CharField(label="Phone Number",
                                widget=forms.TextInput(attrs={"placeholder": "Phone Number"}))
     emergency_contact_name = forms.CharField(label="Emergency Contact Name", max_length=100, required=True,
                                              widget=forms.TextInput(attrs={"placeholder": "Emergency Contact Name"}),
                                              help_text=mark_safe("Please note that we will, obviously,"
                                                                  " contact emergency services, use this field to let us"
                                                                  " know who we should inform about it."))
-    emergency_contact_num = forms.IntegerField(label="Emergency Contact Phone Number",
+    emergency_contact_num = forms.CharField(label="Emergency Contact Phone Number",
                                                widget=forms.TextInput(attrs={
                                                  "placeholder": "Emergency Contact Number"}),
                                                help_text="What number should we use to contact them?")
