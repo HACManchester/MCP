@@ -108,4 +108,5 @@ ENV/
 /docker-compose.override.yml
 /config.codekit3
 !/41cb323dfeeebb990aad228535a7724e.ico.zip
+user_auth/forms.py___jb_tmp___
 /41cb323dfeeebb990aad228535a7724e.ico.zip

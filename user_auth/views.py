@@ -14,7 +14,7 @@ def index(request):
             # redirect to a new URL:
             return HttpResponseRedirect('/thanks/')
     else:
-        form = SignupForm()
+        form = SignupForm(label_suffix='')
 
     return render(request, 'user_auth/index.htm', {'form': form})
 

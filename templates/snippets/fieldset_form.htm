@@ -1,0 +1,26 @@
+<form class="col-md-6 offset-md-3" id="signup-form" action="/sign-up/" method="post">
+    {% csrf_token %}
+    {% for fieldset in form.fieldsets %}
+    <fieldset class="{{ fieldset.classes }}">
+        {% if fieldset.title not in 'member_data,stats'|slice:',' %}
+        <legend>{{ fieldset.title }}</legend>
+        {% endif %}
+
+            {% for field in fieldset %}
+                <div class="container">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                <p class="container help_text">{{ field.help_text }}</p>
+                {% endif %}
+                {% if field.errors %}
+                <p class="container errors">{{ field.errors }}</p>
+                {% endif %}
+                </div>
+            {% endfor %}
+    </fieldset>
+    {% endfor %}
+
+      <!-- submit button -->
+      <input class="btn btn-primary btn-lg" type="submit" value="Sign up" />
+</form>
