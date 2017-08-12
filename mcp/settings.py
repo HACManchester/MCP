@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,11 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'x_hto3dh*&lt4vy5pp5n0_z$lzo!5_x@4az(@l_10@w_+i=s71'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
+DEBUG = os.environ.get('DEBUG') != False
 
 # Application definition
 
@@ -37,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'localflavor',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -117,7 +120,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATICFILES_FINDERS = [
@@ -129,3 +131,71 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+AUTH_LDAP_SERVER_URI = "ldaps://ldap.hacman.org.uk"
+
+#AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True
+
+AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN')
+AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PASSWORD')
+AUTH_LDAP_USER_SEARCH = LDAPSearch("cn=accounts,dc=hacman,dc=org,dc=uk",
+    ldap.SCOPE_SUBTREE, "(|(uid=%(user)s)(mail=%(user)s))")
+
+# Set up the basic group parameters.
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch("cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
+    ldap.SCOPE_SUBTREE, "(&(objectClass=groupOfNames)(memberOf=cn=mcp,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk))"
+)
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
+
+AUTH_LDAP_REQUIRE_GROUP = "cn=allusers,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk"
+
+# Populate the Django user from the LDAP directory.
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+    "username": "uid"
+}
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+    "is_member": "cn=members,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
+    "is_staff": "cn=mcp_useradmins,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
+    "is_superuser": "cn=mcp_useradmins,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk"
+}
+
+AUTH_LDAP_FIND_GROUP_PERMS = True
+
+AUTH_LDAP_CACHE_GROUPS = True
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 60
+
+AUTH_LDAP_MIRROR_GROUPS = True
+
+# Keep ModelBackend around for local superuser
+AUTHENTICATION_BACKENDS = (
+    'mcp.ldap.LDAPMergeBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Where can a user log in?
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'stream_to_console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler'
+        },
+    },
+    'loggers': {
+        'django_auth_ldap': {
+            'handlers': ['stream_to_console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+}
+
+INTERNAL_IPS = ['172.18.0.1']

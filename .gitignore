@@ -102,11 +102,15 @@ ENV/
 .idea
 
 # macfiles
-
 .DS_Store
 .gitignore.swp
-/docker-compose.override.yml
-/config.codekit3
-!/41cb323dfeeebb990aad228535a7724e.ico.zip
-user_auth/forms.py___jb_tmp___
-/41cb323dfeeebb990aad228535a7724e.ico.zip
+
+config.codekit3
+41cb323dfeeebb990aad228535a7724e.ico.zip
+*___jb_tmp___
+
+# Docker SECRETZ
+docker-compose.override.yml
+
+# Database migration files
+*/migrations/*
