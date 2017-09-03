@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 
 from .forms import SignupForm
+from .models import Member, MemberEmergencyContacts
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
 
-from mcp.ldap import HackspaceIPA
+from mcp.ldap import HackspaceIPA, LDAPMergeBackend
 
+from datetime import datetime
 
 def register(request):
     if request.method == 'POST':
@@ -13,18 +16,49 @@ def register(request):
         if form.is_valid():
             print("Creating user {username} {name} {email} {password}".format(**form.cleaned_data))
             ipa = HackspaceIPA()
-            result = ipa.CreateIPAUser(form.cleaned_data['username'], form.cleaned_data['name'], form.cleaned_data['email'], form.cleaned_data['password'])
+            result = ipa.CreateIPAUser(form.cleaned_data['username'], form.cleaned_data['name'], form.cleaned_data['email'])
 
             if not result['error']:
-                pass
-                #We have created the user!
-                # Grab their user from LDAP auth
+                pwc_result = ipa.ChangeIPAUserPassword(form.cleaned_data['username'], new_password=form.cleaned_data['password'])
+
+                new_user = LDAPMergeBackend().populate_user(form.cleaned_data['username'])
+                new_user.save()
+
+                new_member = Member(
+                    user=new_user,
+                    address=form.cleaned_data['address'],
+                    address1=form.cleaned_data['address1'],
+                    city=form.cleaned_data['city'],
+                    postcode=form.cleaned_data['postcode'],
+                    phone=form.cleaned_data['phone'],
+                    membership_expiry=datetime.now(),
+                    emergency_information=form.cleaned_data['anything_else']
+                )
+                new_member.save()
+
+                new_emergency_contact = MemberEmergencyContacts(
+                    member = new_member,
+                    name = form.cleaned_data['emergency_contact_name'],
+                    phone = form.cleaned_data['emergency_contact_num']
+                )
+                new_emergency_contact.save()
+
+                new_request = HttpRequest()
+                if request.session:
+                    new_request.session = request.session
+                else:
+                    new_request.session = engine.SessionStore()
+
+                print ("Getting authenticated user object from ldap")
+                new_auth_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'], backend=LDAPMergeBackend)
+                print ("Logging in with our new object")
+                login(new_request, new_auth_user)
+                print("We are now logged in maybe?")
+
+                return HttpResponseRedirect('/test/')
             else:
                 print ('{name} Error Creating user! {message}'.format(**result['error']))
                 pass
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
             return HttpResponseRedirect('/thanks/')
     else:
         form = SignupForm(label_suffix='')
