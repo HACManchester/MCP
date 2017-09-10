@@ -6,6 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
 {#  googlefonts #}
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i" rel="stylesheet">
 {#    bootstrap #}
@@ -14,7 +18,9 @@
 {#    font awesome #}
     <script src="https://use.fontawesome.com/96d106795d.js"></script>
 {#    custom css #}
-    <link rel="stylesheet" href="{% static "style.css" %}">
+    <link rel="stylesheet" href="{% static 'style-min.css' %}">
+{#    custom jQuery #}
+    <script src="{% static 'scripts-min.js' %}"></script>
     {% block head %}
     <title>HacMan {% if title %} - {% block title %}{% endblock %} {% endif %}</title>
     {% endblock %}
@@ -27,13 +33,15 @@
 </head>
 
 <body class="container">
-    <header class="d-flex align-items-center    ">
+    <header class="row justify-content-center align-items-center">
       {% block header %}
-          <div class="col-lg-9">
+          <div class="col-sm col-lg-3 text-center flex-md-last">
+            <img id="header-logo" class="img-fluid" src="https://hacman.org.uk/wp-content/uploads/2013/11/hackspace-black1.png">
+          </div>
+          <div class="col-sm col-lg-9 hidden-sm-down">
               <h1>Hackspace Manchester</h1>
               <h2>A place for people who make things, to make things together.</h2>
           </div>
-          <img id="header-logo" class="col-lg-3 ml-auto" src="https://hacman.org.uk/wp-content/uploads/2013/11/hackspace-black1.png">
       {% endblock %}
     </header>
 

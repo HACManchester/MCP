@@ -11,18 +11,25 @@ body {
 #signup-form {
   padding-bottom: 2rem; }
   #signup-form div {
-    padding: 1em 0; }
-    #signup-form div label, #signup-form div span {
+    padding: 1em 0;
+    position: relative; }
+    #signup-form div span {
       display: block;
-      padding-left: 0.5em; }
+      padding-left: 0.5em;
+      padding-top: 1em; }
+    #signup-form div label {
+      padding-left: 0.5em;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none; }
     #signup-form div input, #signup-form div textarea, #signup-form div select {
+      margin-top: 1rem;
       display: block;
       width: 100%;
       border: 1px solid;
       padding: 0.5em;
       border-radius: 5px; }
-    #signup-form div span {
-      padding-top: 1em; }
     #signup-form div select {
       height: 1.5em !important;
       line-height: 1.5 !important; }
