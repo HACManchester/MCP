@@ -5,6 +5,8 @@ import localflavor.gb.forms as gb_forms
 from django.utils.html import mark_safe
 from django.forms.models import ModelFormOptions
 
+from mcp import ldap
+
 # adding fieldsets to forms
 
 _old_init = ModelFormOptions.__init__
@@ -69,9 +71,9 @@ class SignupForm(forms.Form):
                                widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
     password_check = forms.CharField(label="Re-enter Password", min_length=8,
                                      widget=forms.PasswordInput(attrs={"placeholder": "Re-enter password"}))
-    username = forms.CharField(label="Username", max_length=100,
+    username = ldap.LDAPUsernameField(label="Username", max_length=100,
                                widget=forms.TextInput(attrs={"placeholder": "Username"}),
-                               help_text="You can use this to login and we will use it to refer to you in internal" 
+                               help_text="You can use this to login and we will use it to refer to you in internal"
                                          " systems")
     address = forms.CharField(label="Address", required=True,
                               widget=forms.TextInput(attrs={"placeholder": "Street Address"}))
@@ -79,14 +81,14 @@ class SignupForm(forms.Form):
     city = forms.CharField(label="Town/City", widget=forms.TextInput(attrs={"placeholder": "Town/City"}))
     postcode = gb_forms.GBPostcodeField(label="Postcode",
                                         widget=forms.TextInput(attrs={"placeholder": "Postcode"}))
-    phone = forms.IntegerField(label="Phone Number",
+    phone = forms.CharField(label="Phone Number",
                                widget=forms.TextInput(attrs={"placeholder": "Phone Number"}))
     emergency_contact_name = forms.CharField(label="Emergency Contact Name", max_length=100, required=True,
                                              widget=forms.TextInput(attrs={"placeholder": "Emergency Contact Name"}),
                                              help_text=mark_safe("Please note that we will, obviously,"
                                                                  " contact emergency services, use this field to let us"
                                                                  " know who we should inform about it."))
-    emergency_contact_num = forms.IntegerField(label="Emergency Contact Phone Number",
+    emergency_contact_num = forms.CharField(label="Emergency Contact Phone Number",
                                                widget=forms.TextInput(attrs={
                                                  "placeholder": "Emergency Contact Number"}),
                                                help_text="What number should we use to contact them?")

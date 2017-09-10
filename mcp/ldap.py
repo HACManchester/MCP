@@ -4,6 +4,25 @@
 #https://bitbucket.org/illocution/django-auth-ldap/issues/63/authentication-against-different-ldap
 
 from django_auth_ldap.backend import LDAPBackend
+import ipahttp
+import os
+import random, string
+import requests
+
+from django.forms import CharField
+from django.core import validators
+from django.core.exceptions import ValidationError
+
+def validate_ldap_username(value):
+    user = LDAPMergeBackend().populate_user(value)
+    if user is not None:
+        raise ValidationError(
+            'Sorry, username %(value)s is already in use.',
+            params={'value': value},
+        )
+
+class LDAPUsernameField(CharField):
+    default_validators = [validate_ldap_username]
 
 class LDAPMergeBackend(LDAPBackend):
     def get_or_create_user(self, username, ldap_user):
@@ -31,3 +50,42 @@ class LDAPMergeBackend(LDAPBackend):
         }
 
         return model.objects.get_or_create(**kwargs)
+
+class HackspaceIPA():
+    def __init__(self):
+        self.ipa = ipahttp.ipa(os.environ.get('IPA_URL'), sslverify=True)
+        self.ipa.login(os.environ.get('IPA_ADMIN_USER'), os.environ.get('IPA_ADMIN_PASSWORD'))
+
+    def ModifyIPAUser(self, username, **kwargs):
+        pass
+
+    def CreateIPAUser(self, username, name, email):
+        ename = name.split()
+        tmp_pass = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase + string.digits) for _ in range(20))
+        return self.ipa.user_add(username, opts={'givenname':ename[0], 'sn':ename[-1], 'cn':name, 'displayname':username, 'mail':email, 'userpassword':tmp_pass})
+
+    def ChangeIPAUserPassword(self, username, new_password, **kwargs):
+        if 'old_password' not in kwargs:
+            tmp_pass = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase + string.digits) for _ in range(20))
+            result = self.ipa.user_mod(username, setattrs=['userpassword='+tmp_pass])
+            kwargs['old_password'] = tmp_pass
+
+        headers = {
+          'Accept': 'text/plain',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Referer': os.environ.get('IPA_URL')
+        }
+
+        params = {
+            'user': username,
+            'old_password': kwargs['old_password'],
+            'new_password': new_password
+        }
+
+        r = requests.post('https://'+os.environ.get('IPA_URL')+'/ipa/session/change_password', data=params, headers=headers)
+
+        #       read the results back, if it wasn't 200 it failed, if it was 200 but the body has rejected in it, it failed
+        if r.status_code == 200:
+            if 'rejected' not in r.text:
+                return True
+        return False
