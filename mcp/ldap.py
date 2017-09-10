@@ -1,4 +1,4 @@
-# I had to subclass this because we want to be able to log in with usernames or
+# I had to subclass the LDAPBackend because we want to be able to log in with usernames or
 # email addresses, and django_auth_ldap gets like 90% of the way there but then
 # fails at the last hurdle.
 #https://bitbucket.org/illocution/django-auth-ldap/issues/63/authentication-against-different-ldap
@@ -51,6 +51,7 @@ class LDAPMergeBackend(LDAPBackend):
 
         return model.objects.get_or_create(**kwargs)
 
+# Abstracts the raw ipa api calls to a standard interface which we can add extra nice things to
 class HackspaceIPA():
     def __init__(self):
         self.ipa = ipahttp.ipa(os.environ.get('IPA_URL'), sslverify=True)

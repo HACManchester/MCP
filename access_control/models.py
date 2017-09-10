@@ -1,7 +1,7 @@
 from django.db import models
-from user_auth import models
+from django.conf import settings
 
 class Tag(models.Model):
-    member = models.ForeignKey('user_auth.Member', on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=20)
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=20, primary_key=True)
