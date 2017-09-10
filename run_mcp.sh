@@ -7,5 +7,7 @@ while ! pg_isready -h db -p 5432 > /dev/null 2> /dev/null; do
 done
 
 python3 manage.py makemigrations
+python3 manage.py makemigrations user_auth
+python3 manage.py makemigrations access_control
 python3 manage.py migrate
 python3 manage.py runserver 0.0.0.0:8000

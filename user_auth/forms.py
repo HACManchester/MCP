@@ -5,6 +5,8 @@ import localflavor.gb.forms as gb_forms
 from django.utils.html import mark_safe
 from django.forms.models import ModelFormOptions
 
+from mcp import ldap
+
 # adding fieldsets to forms
 
 _old_init = ModelFormOptions.__init__
@@ -57,9 +59,9 @@ class SignupForm(forms.Form):
                                widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
     password_check = forms.CharField(label="Re-enter Password", min_length=8,
                                      widget=forms.PasswordInput(attrs={"placeholder": "Re-enter password"}))
-    username = forms.CharField(label="Username", max_length=100,
+    username = ldap.LDAPUsernameField(label="Username", max_length=100,
                                widget=forms.TextInput(attrs={"placeholder": "Username"}),
-                               help_text="You can use this to login and we will use it to refer to you in internal" 
+                               help_text="You can use this to login and we will use it to refer to you in internal"
                                          " systems")
     address = forms.CharField(label="Address", required=True,
                               widget=forms.TextInput(attrs={"placeholder": "Street Address"}))
