@@ -179,8 +179,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Where can a user log in?
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/test'
 
 LOGGING = {
     'version': 1,

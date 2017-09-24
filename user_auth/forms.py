@@ -49,18 +49,6 @@ def fieldsets(self):
 
 #  End fieldsets additions
 
-MEMBERSHIP_AMOUNTS = (
-    ('10', 10),
-    ('15', 15),
-    ('20', 20),
-    ('25', 25),
-    ('30', 30),
-    ('35', 35),
-    ('40', 40),
-    ('50', 50),
-    ('Other', 'Other'),
-)
-
 
 class SignupForm(forms.Form):
 

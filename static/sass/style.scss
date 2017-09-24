@@ -1,26 +1,42 @@
 $hacman_yellow: #e5e567;
 
+body {
+  padding-bottom: 2em;
+}
+
+.btn-secondary {
+    background-color: $hacman_yellow;
+    border: none;
+}
+
 #header-logo, header div {
   display: inline-block;
 }
 
 #signup-form {
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
   div {
     padding: 1em 0;
-    label, span {
+    position: relative;
+    span {
       display: block;
       padding-left: 0.5em;
+      padding-top: 1em;
+    }
+    label {
+      padding-left: 0.5em;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
     }
     input, textarea, select {
+      margin-top: 1rem;
       display: block;
       width: 100%;
       border: 1px solid;
       padding: 0.5em;
       border-radius: 5px;
-    }
-    span {
-      padding-top: 1em;
     }
     select {
       height: 1.5em !important;
@@ -31,7 +47,20 @@ $hacman_yellow: #e5e567;
       font-size: 0.75em;
     }
   }
-  .btn-primary {
-    background-color: $hacman_yellow;
+}
+
+#login_form {
+  p {
+    label, span {
+      display: block;
+      padding-left: 0.5em;
+    }
+    input {
+      display: block;
+      width: 100%;
+      border: 1px solid;
+      padding: 0.5em;
+      border-radius: 5px;
+    }
   }
 }

@@ -1,0 +1,1 @@
+$(function(){$("form").find("input").keyup(function(f){var a=f.target.id;""===$("#"+a).val()?$('label[for="'+a+'"]').fadeOut("fast"):$('label[for="'+a+'"]').fadeIn("fast")})});

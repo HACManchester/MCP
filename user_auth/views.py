@@ -10,6 +10,12 @@ from mcp.ldap import HackspaceIPA, LDAPMergeBackend
 
 from datetime import datetime
 
+def index(request):
+    # TODO: if loogged out render this
+    return render(request, 'user_auth/index.htm')
+    # TODO: if logged in render dashboard
+
+
 def register(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
