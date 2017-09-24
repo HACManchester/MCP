@@ -57,8 +57,18 @@ class HackspaceIPA():
         self.ipa = ipahttp.ipa(os.environ.get('IPA_URL'), sslverify=True)
         self.ipa.login(os.environ.get('IPA_ADMIN_USER'), os.environ.get('IPA_ADMIN_PASSWORD'))
 
+    def GetIPAUser(self, username):
+        user = self.ipa.user_show(username)
+        if user['error'] is None:
+            return user['result']['result']
+
     def ModifyIPAUser(self, username, **kwargs):
-        pass
+        setattrs = []
+        for arg in kwargs:
+            setattrs.append("{0}={1}".format(arg, kwargs[arg]))
+        print(setattrs)
+        result = self.ipa.user_mod(username, setattrs=setattrs)
+        return result['error'] is not None
 
     def CreateIPAUser(self, username, name, email):
         ename = name.split()

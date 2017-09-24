@@ -11,6 +11,7 @@ class Member(models.Model):
     phone = models.CharField(max_length=40)
     membership_expiry = models.DateField(auto_now_add=True)
     emergency_information = models.CharField(max_length=1024)
+    email_is_verified = models.BooleanField(default=False)
 
 class MemberEmergencyContacts(models.Model):
     member = models.ForeignKey('Member', on_delete=models.CASCADE)
