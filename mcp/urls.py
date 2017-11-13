@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^', include('user_auth.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^', include('payments.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,6 @@
 from django.db import models
-from user_auth import models
+from user_auth import models as user_models 
+
 
 class Payments(models.Model):
     PAYMENT_TYPES = (

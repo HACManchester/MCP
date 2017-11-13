@@ -27,7 +27,7 @@ SECRET_KEY = 'x_hto3dh*&lt4vy5pp5n0_z$lzo!5_x@4az(@l_10@w_+i=s71'
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = os.environ.get('DEBUG') != False
+DEBUG = os.environ.get('DEBUG') is not False
 
 # Application definition
 
@@ -136,17 +136,19 @@ STATICFILES_DIRS = [
 
 AUTH_LDAP_SERVER_URI = "ldaps://ldap.hacman.org.uk"
 
-#AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True
+# AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True
 
 AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN')
 AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PASSWORD')
 AUTH_LDAP_USER_SEARCH = LDAPSearch("cn=accounts,dc=hacman,dc=org,dc=uk",
-    ldap.SCOPE_SUBTREE, "(|(uid=%(user)s)(mail=%(user)s))")
+                                   ldap.SCOPE_SUBTREE, "(|(uid=%(user)s)(mail=%(user)s))")
 
 # Set up the basic group parameters.
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch("cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk",
-    ldap.SCOPE_SUBTREE, "(&(objectClass=groupOfNames)(memberOf=cn=mcp,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk))"
-)
+                                    ldap.SCOPE_SUBTREE,
+                                    "(&(objectClass=groupOfNames)(memberOf=cn=mcp,"
+                                    "cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk))")
+
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
 
 AUTH_LDAP_REQUIRE_GROUP = "cn=allusers,cn=groups,cn=accounts,dc=hacman,dc=org,dc=uk"
@@ -177,6 +179,9 @@ AUTHENTICATION_BACKENDS = (
     'mcp.ldap.LDAPMergeBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+# GoCardless
+GC_ACCESS_TOKEN = os.environ.get('GC_ACCESS_TOKEN')
 
 # Where can a user log in?
 LOGIN_URL = '/'

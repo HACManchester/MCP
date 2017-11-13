@@ -8,7 +8,7 @@ from mcp.ldap import HackspaceIPA, LDAPMergeBackend
 @receiver(post_save, sender=User, weak=False)
 def save_user(sender, **kwargs):
     user_from_save = kwargs['instance']
-    user_from_ldap = HackspaceIPA().GetIPAUser(user_from_save.username)
+    user_from_ldap = HackspaceIPA().get_ipa_user(user_from_save.username)
 
     if user_from_ldap:
         attrs = {}
@@ -32,5 +32,5 @@ def save_user(sender, **kwargs):
             attrs['initials'] = "".join(item[0].upper() for item in attrs['cn'].split())
 
         if kwargs:
-            return HackspaceIPA().ModifyIPAUser(user_from_save.username, **attrs)
+            return HackspaceIPA().modify_ipa_user(user_from_save.username, **attrs)
     return False

@@ -10,6 +10,7 @@ from mcp.ldap import HackspaceIPA, LDAPMergeBackend
 
 from datetime import datetime
 
+
 def index(request):
     # TODO: if loogged out render this
     return render(request, 'user_auth/index.htm')
@@ -22,10 +23,12 @@ def register(request):
         if form.is_valid():
             print("Creating user {username} {name} {email} {password}".format(**form.cleaned_data))
             ipa = HackspaceIPA()
-            result = ipa.CreateIPAUser(form.cleaned_data['username'], form.cleaned_data['name'], form.cleaned_data['email'])
+            result = ipa.create_ipa_user(form.cleaned_data['username'], form.cleaned_data['name'],
+                                         form.cleaned_data['email'])
 
             if not result['error']:
-                pwc_result = ipa.ChangeIPAUserPassword(form.cleaned_data['username'], new_password=form.cleaned_data['password'])
+                pwc_result = ipa.change_ipa_user_password(form.cleaned_data['username'],
+                                                          new_password=form.cleaned_data['password'])
 
                 new_user = LDAPMergeBackend().populate_user(form.cleaned_data['username'])
                 new_user.save()
@@ -43,9 +46,9 @@ def register(request):
                 new_member.save()
 
                 new_emergency_contact = MemberEmergencyContacts(
-                    member = new_member,
-                    name = form.cleaned_data['emergency_contact_name'],
-                    phone = form.cleaned_data['emergency_contact_num']
+                    member=new_member,
+                    name=form.cleaned_data['emergency_contact_name'],
+                    phone=form.cleaned_data['emergency_contact_num']
                 )
                 new_emergency_contact.save()
 
@@ -55,15 +58,17 @@ def register(request):
                 else:
                     new_request.session = engine.SessionStore()
 
-                print ("Getting authenticated user object from ldap")
-                new_auth_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'], backend=LDAPMergeBackend)
-                print ("Logging in with our new object")
+                print("Getting authenticated user object from ldap")
+                new_auth_user = authenticate(username=form.cleaned_data['username'],
+                                             password=form.cleaned_data['password'],
+                                             backend=LDAPMergeBackend)
+                print("Logging in with our new object")
                 login(new_request, new_auth_user)
                 print("We are now logged in maybe?")
 
-                return HttpResponseRedirect('/test/')
+                return HttpResponseRedirect('/payments/')
             else:
-                print ('{name} Error Creating user! {message}'.format(**result['error']))
+                print('{name} Error Creating user! {message}'.format(**result['error']))
                 pass
             return HttpResponseRedirect('/thanks/')
     else:
@@ -74,6 +79,7 @@ def register(request):
 
 def thanks(request):
     return
+
 
 @login_required
 def test(request):

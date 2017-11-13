@@ -5,3 +5,4 @@ django-auth-ldap
 pyldap
 django-debug-toolbar
 https://github.com/nordnet/python-freeipa-json/archive/master.zip
+gocardless_pro
